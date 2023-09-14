@@ -7,7 +7,14 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.7"
+polars = "0.16.8"
+scikit-learn = "1.0.2"
+kaggle = "^1.5.16"
+ipykernel = "6.16.2"
 
+
+[tool.poetry.group.dev.dependencies]
+mypy = "1.4.1"
 
 [build-system]
 requires = ["poetry-core"]
