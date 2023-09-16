@@ -1,22 +1,23 @@
 [tool.poetry]
-name = "src"
+name = "kaggle-zzz"
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.7.1,<4.0"
-polars = "0.16.8"
-scikit-learn = "1.0.2"
-kaggle = "^1.5.16"
-ipykernel = "6.16.2"
-pandas = "1.3.5"
-pyarrow = "6.0.1"
+python = "^3.10"
+pandas = "2.0.3"
+scikit-learn = "1.2.2"
+ipykernel = "6.23.3"
+polars = "0.19.2"
+pyarrow = "9.0.0"
+xgboost = "1.7.6"
+kaggle = "1.5.16"
 
 
 [tool.poetry.group.dev.dependencies]
-mypy = "1.4.1"
+mypy = "^1.5.1"
 
 [build-system]
 requires = ["poetry-core"]
