@@ -2,6 +2,8 @@ from typing import Optional
 
 import torch
 import torch.nn as nn
+from pytorch_lightning import LightningModule
+from pytorch_lightning.utilities.types import STEP_OUTPUT, OptimizerLRScheduler
 
 
 class LSTM(nn.Module):
@@ -35,3 +37,32 @@ class LSTM(nn.Module):
         output = self.sigmoid(output)
 
         return output, (hn, cn)
+
+
+class LSTMModule(LightningModule):
+    def __init__(self, model: nn.Module, lr: float) -> None:
+        super().__init__()
+        self.model = model
+        self.lr = lr
+        self.loss_fn = nn.BCELoss()
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return self.model(x)
+
+    def configure_optimizers(
+        self,
+    ) -> OptimizerLRScheduler:
+        return torch.optim.Adam(self.model.parameters(), lr=self.lr)
+
+    def training_step(self, batch, batch_index) -> STEP_OUTPUT:
+        X, y = batch
+        pred, _ = self(X)
+        loss = self.loss_fn(pred, y)
+        return loss
+
+    def validation_step(self, batch, batch_index) -> None:
+        X, y = batch
+        pred, _ = self(X)
+        loss = self.loss_fn(pred, y)
+        self.log("val_loss", loss)
+        return None
