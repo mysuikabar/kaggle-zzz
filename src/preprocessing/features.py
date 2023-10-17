@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import polars as pl
 from scipy.stats import norm
 
@@ -7,6 +9,18 @@ def _gaussian_weights(window_half: int, sigma: float) -> list[float]:
         list(range(-window_half, window_half + 1)), scale=sigma
     ) / norm.pdf(0, scale=sigma)
     return weights
+
+
+def load_series_data(path: Path) -> pl.DataFrame:
+    return pl.read_parquet(path).with_columns(pl.col("timestamp").str.to_datetime())
+
+
+def load_events_data(path: Path) -> pl.DataFrame:
+    return (
+        pl.read_csv(path)
+        .drop_nulls(subset="step")
+        .with_columns(pl.col("step").cast(pl.UInt32))
+    )
 
 
 def create_dataset(
