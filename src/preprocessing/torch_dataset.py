@@ -13,7 +13,7 @@ class SleepDataset(Dataset):
             for name, df_sub in df.group_by(
                 pl.col("series_id"), pl.col("timestamp").dt.date()
             )
-        ]  # series_id * date 単位に分割
+        ]  # split into units of (series_id x date)
 
     def __len__(self) -> int:
         return len(self.data)
@@ -29,8 +29,8 @@ class SleepDataset(Dataset):
 
 def pad_sequence_fn(batch):
     """
-    バッチの中の最長系列に合わせてpaddingする
-    DataLoaderのcollate_fnに渡す
+    Padding to match the longest series in the batch.
+    Pass to collate_fn of DataLoader.
     """
     X, y = list(zip(*batch))
     X_pad = pad_sequence(X, batch_first=True)
