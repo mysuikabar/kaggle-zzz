@@ -39,7 +39,7 @@ class LSTM(nn.Module):
         return output, (hn, cn)
 
 
-class LSTMModule(LightningModule):
+class RNNModule(LightningModule):
     def __init__(self, model: nn.Module, lr: float) -> None:
         super().__init__()
         self.model = model
