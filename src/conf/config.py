@@ -40,3 +40,13 @@ class Config:
     n_splits: int = 4
     model: LSTMConfig = LSTMConfig()
     train: NNTrainConfig = NNTrainConfig()
+
+
+ROOT = Path(__file__).parents[2]
+
+
+@dataclass
+class InferConfig:
+    test_data_path: Path = ROOT / "data/raw_data/test_series.parquet"
+    output_dir: Path = ROOT / "outputs/hoge/"
+    model_file_name: str = "checkpoint-fold1.ckpt"

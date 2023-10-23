@@ -1,3 +1,5 @@
+from typing import Optional, Union
+
 import polars as pl
 import torch
 from torch.utils.data import Dataset
@@ -5,7 +7,7 @@ from torch.utils.data import Dataset
 
 class SleepDataset(Dataset):
     def __init__(
-        self, df: pl.DataFrame, features: list[str], targets: list[str]
+        self, df: pl.DataFrame, features: list[str], targets: Optional[list[str]] = None
     ) -> None:
         self.features = features
         self.targets = targets
@@ -19,14 +21,19 @@ class SleepDataset(Dataset):
     def __len__(self) -> int:
         return len(self.data)
 
-    def __getitem__(self, idx: int) -> tuple[torch.Tensor, torch.Tensor]:
+    def __getitem__(
+        self, idx: int
+    ) -> Union[torch.Tensor, tuple[torch.Tensor, torch.Tensor]]:
         df = self.data[idx]
         X = df.select(self.features)
-        y = df.select(self.targets)
-        return (
-            torch.tensor(X.to_numpy(), dtype=torch.float32),
-            torch.tensor(y.to_numpy(), dtype=torch.float32),
-        )
+        if not self.targets:
+            return torch.tensor(X.to_numpy(), dtype=torch.float32)
+        else:
+            y = df.select(self.targets)
+            return (
+                torch.tensor(X.to_numpy(), dtype=torch.float32),
+                torch.tensor(y.to_numpy(), dtype=torch.float32),
+            )
 
 
 def pad_sequence_fn(batch):
