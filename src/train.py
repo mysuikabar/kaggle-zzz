@@ -16,7 +16,7 @@ from conf.config import Config
 from model.lstm import LSTM, RNNModule
 from preprocessing.features import create_dataset, load_events_data, load_series_data
 from preprocessing.torch_dataset import SleepDataset, pad_sequence_fn
-from utils import fix_seed, seed_worker
+from util.utils import fix_seed, seed_worker
 
 cs = ConfigStore.instance()
 cs.store(name="config", node=Config)
