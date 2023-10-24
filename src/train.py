@@ -14,8 +14,8 @@ from torch.utils.data import DataLoader
 import wandb
 from conf.config import Config
 from model.lstm import LSTM, RNNModule
-from preprocessing.features import create_dataset, load_events_data, load_series_data
-from preprocessing.torch_dataset import SleepDataset, pad_sequence_fn
+from processing.features import create_dataset, load_events_data, load_series_data
+from processing.torch_dataset import SleepDataset, pad_sequence_fn
 from util.utils import fix_seed, seed_worker
 
 cs = ConfigStore.instance()

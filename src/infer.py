@@ -3,8 +3,8 @@ from omegaconf import OmegaConf
 
 from conf.config import InferConfig
 from model.lstm import LSTM, RNNModule
-from preprocessing.features import load_series_data
-from preprocessing.torch_dataset import SleepDataset
+from processing.features import load_series_data
+from processing.torch_dataset import SleepDataset
 
 
 def main():
