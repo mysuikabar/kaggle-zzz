@@ -1,9 +1,13 @@
 from typing import Optional
 
+import pandas as pd
+import polars as pl
 import torch
 import torch.nn as nn
 from pytorch_lightning import LightningModule
 from pytorch_lightning.utilities.types import STEP_OUTPUT, OptimizerLRScheduler
+
+from processing.torch_dataset import SleepDataset
 
 
 class LSTM(nn.Module):
@@ -66,3 +70,17 @@ class RNNModule(LightningModule):
         loss = self.loss_fn(pred, y)
         self.log("val_loss", loss)
         return None
+
+
+def predict(
+    model: nn.Module, dataset: SleepDataset, targets: list[str] = ["onset", "wakeup"]
+) -> pl.DataFrame:
+    df = pd.DataFrame()
+
+    for i in range(len(dataset)):
+        pred, _ = model(dataset[i])
+        df_sub = dataset.data[i].to_pandas()
+        df_sub[targets] = pred.detach().numpy()
+        df = pd.concat([df, df_sub])
+
+    return pl.from_pandas(df)
