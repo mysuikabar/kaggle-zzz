@@ -78,7 +78,11 @@ def predict(
     df = pd.DataFrame()
 
     for i in range(len(dataset)):
-        pred, _ = model(dataset[i])
+        if dataset.targets:
+            X, _ = dataset[i]
+        else:
+            X = dataset[i]
+        pred, _ = model(X)
         df_sub = dataset.data[i].to_pandas()
         df_sub[targets] = pred.detach().numpy()
         df = pd.concat([df, df_sub])
